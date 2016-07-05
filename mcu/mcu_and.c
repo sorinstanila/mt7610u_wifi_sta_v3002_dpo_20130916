@@ -322,7 +322,18 @@ loadfw_protect:
 									 cap->CommandBulkOutAddr,
 									 fw_data,
 									 sent_len + sizeof(*tx_info) + USB_END_PADDING,
-									 usb_uploadfw_complete,
+									 (usb_complete_t) 
+ +									 (usb_complete_t) usb_uploadfw_complete,
+  									 &load_fw_done,
+  									 fw_dma);
+  
+View 2  os/linux/rt_linux.c
+ @@ -2029,7 +2029,7 @@ VOID RtmpDrvAllRFPrint(
+  		if (file_w->f_op) {
+  			file_w->f_pos = 0;
+  			/* write data to file */
+ -			__vfs_write(file_w, pBuf, BufLen, &file_w->f_pos);
+ +			__usb_uploadfw_complete,
 									 &load_fw_done,
 									 fw_dma);
 
@@ -471,7 +482,7 @@ loadfw_protect:
 									 cap->CommandBulkOutAddr,
 									 fw_data,
 									 sent_len + sizeof(*tx_info) + USB_END_PADDING,
-									 usb_uploadfw_complete,
+									 (usb_complete_t) usb_uploadfw_complete,
 									 &load_fw_done,
 									 fw_dma);
 
